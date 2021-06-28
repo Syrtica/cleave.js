@@ -63,13 +63,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React = __webpack_require__(1); // eslint-disable-line no-unused-vars
 	var CreateReactClass = __webpack_require__(2);
 
-	var NumeralFormatter = __webpack_require__(10);
-	var DateFormatter = __webpack_require__(11);
-	var TimeFormatter = __webpack_require__(12);
-	var PhoneFormatter = __webpack_require__(13);
-	var CreditCardDetector = __webpack_require__(14);
-	var Util = __webpack_require__(15);
-	var DefaultProperties = __webpack_require__(16);
+	var NumeralFormatter = __webpack_require__(6);
+	var DateFormatter = __webpack_require__(7);
+	var TimeFormatter = __webpack_require__(8);
+	var PhoneFormatter = __webpack_require__(9);
+	var CreditCardDetector = __webpack_require__(10);
+	var Util = __webpack_require__(11);
+	var DefaultProperties = __webpack_require__(12);
 
 	var cleaveReactClass = CreateReactClass({
 	    componentDidMount: function componentDidMount() {
@@ -595,12 +595,88 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _assign = __webpack_require__(5);
 
-	var emptyObject = __webpack_require__(6);
-	var _invariant = __webpack_require__(7);
+	// -- Inlined from fbjs --
+
+	var emptyObject = {};
 
 	if (process.env.NODE_ENV !== 'production') {
-	  var warning = __webpack_require__(8);
+	  Object.freeze(emptyObject);
 	}
+
+	var validateFormat = function validateFormat(format) {};
+
+	if (process.env.NODE_ENV !== 'production') {
+	  validateFormat = function validateFormat(format) {
+	    if (format === undefined) {
+	      throw new Error('invariant requires an error message argument');
+	    }
+	  };
+	}
+
+	function _invariant(condition, format, a, b, c, d, e, f) {
+	  validateFormat(format);
+
+	  if (!condition) {
+	    var error;
+	    if (format === undefined) {
+	      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
+	    } else {
+	      var args = [a, b, c, d, e, f];
+	      var argIndex = 0;
+	      error = new Error(format.replace(/%s/g, function () {
+	        return args[argIndex++];
+	      }));
+	      error.name = 'Invariant Violation';
+	    }
+
+	    error.framesToPop = 1; // we don't care about invariant's own frame
+	    throw error;
+	  }
+	}
+
+	var warning = function(){};
+
+	if (process.env.NODE_ENV !== 'production') {
+	  var printWarning = function printWarning(format) {
+	    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      args[_key - 1] = arguments[_key];
+	    }
+
+	    var argIndex = 0;
+	    var message = 'Warning: ' + format.replace(/%s/g, function () {
+	      return args[argIndex++];
+	    });
+	    if (typeof console !== 'undefined') {
+	      console.error(message);
+	    }
+	    try {
+	      // --- Welcome to debugging React ---
+	      // This error was thrown as a convenience so that you can use this stack
+	      // to find the callsite that caused this warning to fire.
+	      throw new Error(message);
+	    } catch (x) {}
+	  };
+
+	  warning = function warning(condition, format) {
+	    if (format === undefined) {
+	      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+	    }
+
+	    if (format.indexOf('Failed Composite propType: ') === 0) {
+	      return; // Ignore CompositeComponent proptype check.
+	    }
+
+	    if (!condition) {
+	      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+	        args[_key2 - 2] = arguments[_key2];
+	      }
+
+	      printWarning.apply(undefined, [format].concat(args));
+	    }
+	  };
+	}
+
+	// /-- Inlined from fbjs --
 
 	var MIXINS_KEY = 'mixins';
 
@@ -1800,197 +1876,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright (c) 2013-present, Facebook, Inc.
-	 *
-	 * This source code is licensed under the MIT license found in the
-	 * LICENSE file in the root directory of this source tree.
-	 *
-	 */
-
-	'use strict';
-
-	var emptyObject = {};
-
-	if (process.env.NODE_ENV !== 'production') {
-	  Object.freeze(emptyObject);
-	}
-
-	module.exports = emptyObject;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright (c) 2013-present, Facebook, Inc.
-	 *
-	 * This source code is licensed under the MIT license found in the
-	 * LICENSE file in the root directory of this source tree.
-	 *
-	 */
-
-	'use strict';
-
-	/**
-	 * Use invariant() to assert state which your program assumes to be true.
-	 *
-	 * Provide sprintf-style format (only %s is supported) and arguments
-	 * to provide information about what broke and what you were
-	 * expecting.
-	 *
-	 * The invariant message will be stripped in production, but the invariant
-	 * will remain to ensure logic does not differ in production.
-	 */
-
-	var validateFormat = function validateFormat(format) {};
-
-	if (process.env.NODE_ENV !== 'production') {
-	  validateFormat = function validateFormat(format) {
-	    if (format === undefined) {
-	      throw new Error('invariant requires an error message argument');
-	    }
-	  };
-	}
-
-	function invariant(condition, format, a, b, c, d, e, f) {
-	  validateFormat(format);
-
-	  if (!condition) {
-	    var error;
-	    if (format === undefined) {
-	      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
-	    } else {
-	      var args = [a, b, c, d, e, f];
-	      var argIndex = 0;
-	      error = new Error(format.replace(/%s/g, function () {
-	        return args[argIndex++];
-	      }));
-	      error.name = 'Invariant Violation';
-	    }
-
-	    error.framesToPop = 1; // we don't care about invariant's own frame
-	    throw error;
-	  }
-	}
-
-	module.exports = invariant;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright (c) 2014-present, Facebook, Inc.
-	 *
-	 * This source code is licensed under the MIT license found in the
-	 * LICENSE file in the root directory of this source tree.
-	 *
-	 */
-
-	'use strict';
-
-	var emptyFunction = __webpack_require__(9);
-
-	/**
-	 * Similar to invariant but only logs a warning if the condition is not met.
-	 * This can be used to log issues in development environments in critical
-	 * paths. Removing the logging code for production environments will keep the
-	 * same logic and follow the same code paths.
-	 */
-
-	var warning = emptyFunction;
-
-	if (process.env.NODE_ENV !== 'production') {
-	  var printWarning = function printWarning(format) {
-	    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	      args[_key - 1] = arguments[_key];
-	    }
-
-	    var argIndex = 0;
-	    var message = 'Warning: ' + format.replace(/%s/g, function () {
-	      return args[argIndex++];
-	    });
-	    if (typeof console !== 'undefined') {
-	      console.error(message);
-	    }
-	    try {
-	      // --- Welcome to debugging React ---
-	      // This error was thrown as a convenience so that you can use this stack
-	      // to find the callsite that caused this warning to fire.
-	      throw new Error(message);
-	    } catch (x) {}
-	  };
-
-	  warning = function warning(condition, format) {
-	    if (format === undefined) {
-	      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-	    }
-
-	    if (format.indexOf('Failed Composite propType: ') === 0) {
-	      return; // Ignore CompositeComponent proptype check.
-	    }
-
-	    if (!condition) {
-	      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-	        args[_key2 - 2] = arguments[_key2];
-	      }
-
-	      printWarning.apply(undefined, [format].concat(args));
-	    }
-	  };
-	}
-
-	module.exports = warning;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	/**
-	 * Copyright (c) 2013-present, Facebook, Inc.
-	 *
-	 * This source code is licensed under the MIT license found in the
-	 * LICENSE file in the root directory of this source tree.
-	 *
-	 * 
-	 */
-
-	function makeEmptyFunction(arg) {
-	  return function () {
-	    return arg;
-	  };
-	}
-
-	/**
-	 * This function accepts and discards inputs; it has no side effects. This is
-	 * primarily useful idiomatically for overridable function endpoints which
-	 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
-	 */
-	var emptyFunction = function emptyFunction() {};
-
-	emptyFunction.thatReturns = makeEmptyFunction;
-	emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
-	emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
-	emptyFunction.thatReturnsNull = makeEmptyFunction(null);
-	emptyFunction.thatReturnsThis = function () {
-	  return this;
-	};
-	emptyFunction.thatReturnsArgument = function (arg) {
-	  return arg;
-	};
-
-	module.exports = emptyFunction;
-
-/***/ }),
-/* 10 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2112,7 +1997,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = NumeralFormatter;
 
 /***/ }),
-/* 11 */
+/* 7 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2353,7 +2238,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = DateFormatter;
 
 /***/ }),
-/* 12 */
+/* 8 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2543,7 +2428,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = TimeFormatter;
 
 /***/ }),
-/* 13 */
+/* 9 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2610,109 +2495,109 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = PhoneFormatter;
 
 /***/ }),
-/* 14 */
+/* 10 */
 /***/ (function(module, exports) {
 
 	'use strict';
 
 	var CreditCardDetector = {
-	    blocks: {
-	        uatp: [4, 5, 6],
-	        amex: [4, 6, 5],
-	        diners: [4, 6, 4],
-	        discover: [4, 4, 4, 4],
-	        mastercard: [4, 4, 4, 4],
-	        dankort: [4, 4, 4, 4],
-	        instapayment: [4, 4, 4, 4],
-	        jcb15: [4, 6, 5],
-	        jcb: [4, 4, 4, 4],
-	        maestro: [4, 4, 4, 4],
-	        visa: [4, 4, 4, 4],
-	        mir: [4, 4, 4, 4],
-	        unionPay: [4, 4, 4, 4],
-	        general: [4, 4, 4, 4]
-	    },
+	        blocks: {
+	                uatp: [4, 5, 6],
+	                amex: [4, 6, 5],
+	                diners: [4, 6, 4],
+	                discover: [4, 4, 4, 4],
+	                mastercard: [4, 4, 4, 4],
+	                dankort: [4, 4, 4, 4],
+	                instapayment: [4, 4, 4, 4],
+	                jcb15: [4, 6, 5],
+	                jcb: [4, 4, 4, 4],
+	                maestro: [4, 4, 4, 4],
+	                visa: [4, 4, 4, 4],
+	                mir: [4, 4, 4, 4],
+	                unionPay: [4, 4, 4, 4],
+	                general: [4, 4, 4, 4]
+	        },
 
-	    re: {
-	        // starts with 1; 15 digits, not starts with 1800 (jcb card)
-	        uatp: /^(?!1800)1\d{0,14}/,
+	        re: {
+	                // starts with 1; 15 digits, not starts with 1800 (jcb card)
+	                uatp: /^(?!1800)1\d{0,14}/,
 
-	        // starts with 34/37; 15 digits
-	        amex: /^3[47]\d{0,13}/,
+	                // starts with 34/37; 15 digits
+	                amex: /^3[47]\d{0,13}/,
 
-	        // starts with 6011/65/644-649; 16 digits
-	        discover: /^(?:6011|65\d{0,2}|64[4-9]\d?)\d{0,12}/,
+	                // starts with 6011/65/644-649; 16 digits
+	                discover: /^(?:6011|65\d{0,2}|64[4-9]\d?)\d{0,12}/,
 
-	        // starts with 300-305/309 or 36/38/39; 14 digits
-	        diners: /^3(?:0([0-5]|9)|[689]\d?)\d{0,11}/,
+	                // starts with 300-305/309 or 36/38/39; 14 digits
+	                diners: /^3(?:0([0-5]|9)|[689]\d?)\d{0,11}/,
 
-	        // starts with 51-55/2221–2720; 16 digits
-	        mastercard: /^(5[1-5]\d{0,2}|22[2-9]\d{0,1}|2[3-7]\d{0,2})\d{0,12}/,
+	                // starts with 51-55/2221–2720; 16 digits
+	                mastercard: /^(5[1-5]\d{0,2}|22[2-9]\d{0,1}|2[3-7]\d{0,2})\d{0,12}/,
 
-	        // starts with 5019/4175/4571; 16 digits
-	        dankort: /^(5019|4175|4571)\d{0,12}/,
+	                // starts with 5019/4175/4571; 16 digits
+	                dankort: /^(5019|4175|4571)\d{0,12}/,
 
-	        // starts with 637-639; 16 digits
-	        instapayment: /^63[7-9]\d{0,13}/,
+	                // starts with 637-639; 16 digits
+	                instapayment: /^63[7-9]\d{0,13}/,
 
-	        // starts with 2131/1800; 15 digits
-	        jcb15: /^(?:2131|1800)\d{0,11}/,
+	                // starts with 2131/1800; 15 digits
+	                jcb15: /^(?:2131|1800)\d{0,11}/,
 
-	        // starts with 2131/1800/35; 16 digits
-	        jcb: /^(?:35\d{0,2})\d{0,12}/,
+	                // starts with 2131/1800/35; 16 digits
+	                jcb: /^(?:35\d{0,2})\d{0,12}/,
 
-	        // starts with 50/56-58/6304/67; 16 digits
-	        maestro: /^(?:5[0678]\d{0,2}|6304|67\d{0,2})\d{0,12}/,
+	                // starts with 50/56-58/6304/67; 16 digits
+	                maestro: /^(?:5[0678]\d{0,2}|6304|67\d{0,2})\d{0,12}/,
 
-	        // starts with 22; 16 digits
-	        mir: /^220[0-4]\d{0,12}/,
+	                // starts with 22; 16 digits
+	                mir: /^220[0-4]\d{0,12}/,
 
-	        // starts with 4; 16 digits
-	        visa: /^4\d{0,15}/,
+	                // starts with 4; 16 digits
+	                visa: /^4\d{0,15}/,
 
-	        // starts with 62/81; 16 digits
-	        unionPay: /^(62|81)\d{0,14}/
-	    },
+	                // starts with 62/81; 16 digits
+	                unionPay: /^(62|81)\d{0,14}/
+	        },
 
-	    getStrictBlocks: function getStrictBlocks(block) {
-	        var total = block.reduce(function (prev, current) {
-	            return prev + current;
-	        }, 0);
+	        getStrictBlocks: function getStrictBlocks(block) {
+	                var total = block.reduce(function (prev, current) {
+	                        return prev + current;
+	                }, 0);
 
-	        return block.concat(19 - total);
-	    },
+	                return block.concat(19 - total);
+	        },
 
-	    getInfo: function getInfo(value, strictMode) {
-	        var blocks = CreditCardDetector.blocks,
-	            re = CreditCardDetector.re;
+	        getInfo: function getInfo(value, strictMode) {
+	                var blocks = CreditCardDetector.blocks,
+	                    re = CreditCardDetector.re;
 
-	        // Some credit card can have up to 19 digits number.
-	        // Set strictMode to true will remove the 16 max-length restrain,
-	        // however, I never found any website validate card number like
-	        // this, hence probably you don't want to enable this option.
-	        strictMode = !!strictMode;
+	                // Some credit card can have up to 19 digits number.
+	                // Set strictMode to true will remove the 16 max-length restrain,
+	                // however, I never found any website validate card number like
+	                // this, hence probably you don't want to enable this option.
+	                strictMode = !!strictMode;
 
-	        for (var key in re) {
-	            if (re[key].test(value)) {
-	                var matchedBlocks = blocks[key];
+	                for (var key in re) {
+	                        if (re[key].test(value)) {
+	                                var matchedBlocks = blocks[key];
+	                                return {
+	                                        type: key,
+	                                        blocks: strictMode ? this.getStrictBlocks(matchedBlocks) : matchedBlocks
+	                                };
+	                        }
+	                }
+
 	                return {
-	                    type: key,
-	                    blocks: strictMode ? this.getStrictBlocks(matchedBlocks) : matchedBlocks
+	                        type: 'unknown',
+	                        blocks: strictMode ? this.getStrictBlocks(blocks.general) : blocks.general
 	                };
-	            }
 	        }
-
-	        return {
-	            type: 'unknown',
-	            blocks: strictMode ? this.getStrictBlocks(blocks.general) : blocks.general
-	        };
-	    }
 	};
 
 	module.exports = CreditCardDetector;
 
 /***/ }),
-/* 15 */
+/* 11 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2984,7 +2869,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Util;
 
 /***/ }),
-/* 16 */
+/* 12 */
 /***/ (function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -2998,83 +2883,83 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 	var DefaultProperties = {
-	    // Maybe change to object-assign
-	    // for now just keep it as simple
-	    assign: function assign(target, opts) {
-	        target = target || {};
-	        opts = opts || {};
+	        // Maybe change to object-assign
+	        // for now just keep it as simple
+	        assign: function assign(target, opts) {
+	                target = target || {};
+	                opts = opts || {};
 
-	        // credit card
-	        target.creditCard = !!opts.creditCard;
-	        target.creditCardStrictMode = !!opts.creditCardStrictMode;
-	        target.creditCardType = '';
-	        target.onCreditCardTypeChanged = opts.onCreditCardTypeChanged || function () {};
+	                // credit card
+	                target.creditCard = !!opts.creditCard;
+	                target.creditCardStrictMode = !!opts.creditCardStrictMode;
+	                target.creditCardType = '';
+	                target.onCreditCardTypeChanged = opts.onCreditCardTypeChanged || function () {};
 
-	        // phone
-	        target.phone = !!opts.phone;
-	        target.phoneRegionCode = opts.phoneRegionCode || 'AU';
-	        target.phoneFormatter = {};
+	                // phone
+	                target.phone = !!opts.phone;
+	                target.phoneRegionCode = opts.phoneRegionCode || 'AU';
+	                target.phoneFormatter = {};
 
-	        // time
-	        target.time = !!opts.time;
-	        target.timePattern = opts.timePattern || ['h', 'm', 's'];
-	        target.timeFormat = opts.timeFormat || '24';
-	        target.timeFormatter = {};
+	                // time
+	                target.time = !!opts.time;
+	                target.timePattern = opts.timePattern || ['h', 'm', 's'];
+	                target.timeFormat = opts.timeFormat || '24';
+	                target.timeFormatter = {};
 
-	        // date
-	        target.date = !!opts.date;
-	        target.datePattern = opts.datePattern || ['d', 'm', 'Y'];
-	        target.dateMin = opts.dateMin || '';
-	        target.dateMax = opts.dateMax || '';
-	        target.dateFormatter = {};
+	                // date
+	                target.date = !!opts.date;
+	                target.datePattern = opts.datePattern || ['d', 'm', 'Y'];
+	                target.dateMin = opts.dateMin || '';
+	                target.dateMax = opts.dateMax || '';
+	                target.dateFormatter = {};
 
-	        // numeral
-	        target.numeral = !!opts.numeral;
-	        target.numeralIntegerScale = opts.numeralIntegerScale > 0 ? opts.numeralIntegerScale : 0;
-	        target.numeralDecimalScale = opts.numeralDecimalScale >= 0 ? opts.numeralDecimalScale : 2;
-	        target.numeralDecimalMark = opts.numeralDecimalMark || '.';
-	        target.numeralThousandsGroupStyle = opts.numeralThousandsGroupStyle || 'thousand';
-	        target.numeralPositiveOnly = !!opts.numeralPositiveOnly;
-	        target.stripLeadingZeroes = opts.stripLeadingZeroes !== false;
-	        target.signBeforePrefix = !!opts.signBeforePrefix;
-	        target.tailPrefix = !!opts.tailPrefix;
+	                // numeral
+	                target.numeral = !!opts.numeral;
+	                target.numeralIntegerScale = opts.numeralIntegerScale > 0 ? opts.numeralIntegerScale : 0;
+	                target.numeralDecimalScale = opts.numeralDecimalScale >= 0 ? opts.numeralDecimalScale : 2;
+	                target.numeralDecimalMark = opts.numeralDecimalMark || '.';
+	                target.numeralThousandsGroupStyle = opts.numeralThousandsGroupStyle || 'thousand';
+	                target.numeralPositiveOnly = !!opts.numeralPositiveOnly;
+	                target.stripLeadingZeroes = opts.stripLeadingZeroes !== false;
+	                target.signBeforePrefix = !!opts.signBeforePrefix;
+	                target.tailPrefix = !!opts.tailPrefix;
 
-	        // others
-	        target.swapHiddenInput = !!opts.swapHiddenInput;
+	                // others
+	                target.swapHiddenInput = !!opts.swapHiddenInput;
 
-	        target.numericOnly = target.creditCard || target.date || !!opts.numericOnly;
+	                target.numericOnly = target.creditCard || target.date || !!opts.numericOnly;
 
-	        target.uppercase = !!opts.uppercase;
-	        target.lowercase = !!opts.lowercase;
+	                target.uppercase = !!opts.uppercase;
+	                target.lowercase = !!opts.lowercase;
 
-	        target.prefix = target.creditCard || target.date ? '' : opts.prefix || '';
-	        target.noImmediatePrefix = !!opts.noImmediatePrefix;
-	        target.prefixLength = target.prefix.length;
-	        target.rawValueTrimPrefix = !!opts.rawValueTrimPrefix;
-	        target.copyDelimiter = !!opts.copyDelimiter;
+	                target.prefix = target.creditCard || target.date ? '' : opts.prefix || '';
+	                target.noImmediatePrefix = !!opts.noImmediatePrefix;
+	                target.prefixLength = target.prefix.length;
+	                target.rawValueTrimPrefix = !!opts.rawValueTrimPrefix;
+	                target.copyDelimiter = !!opts.copyDelimiter;
 
-	        target.initValue = opts.initValue !== undefined && opts.initValue !== null ? opts.initValue.toString() : '';
+	                target.initValue = opts.initValue !== undefined && opts.initValue !== null ? opts.initValue.toString() : '';
 
-	        target.delimiter = opts.delimiter || opts.delimiter === '' ? opts.delimiter : opts.date ? '/' : opts.time ? ':' : opts.numeral ? ',' : opts.phone ? ' ' : ' ';
-	        target.delimiterLength = target.delimiter.length;
-	        target.delimiterLazyShow = !!opts.delimiterLazyShow;
-	        target.delimiters = opts.delimiters || [];
+	                target.delimiter = opts.delimiter || opts.delimiter === '' ? opts.delimiter : opts.date ? '/' : opts.time ? ':' : opts.numeral ? ',' : opts.phone ? ' ' : ' ';
+	                target.delimiterLength = target.delimiter.length;
+	                target.delimiterLazyShow = !!opts.delimiterLazyShow;
+	                target.delimiters = opts.delimiters || [];
 
-	        target.blocks = opts.blocks || [];
-	        target.blocksLength = target.blocks.length;
+	                target.blocks = opts.blocks || [];
+	                target.blocksLength = target.blocks.length;
 
-	        target.root = (typeof global === 'undefined' ? 'undefined' : _typeof(global)) === 'object' && global ? global : window;
-	        target.document = opts.document || target.root.document;
+	                target.root = (typeof global === 'undefined' ? 'undefined' : _typeof(global)) === 'object' && global ? global : window;
+	                target.document = opts.document || target.root.document;
 
-	        target.maxLength = 0;
+	                target.maxLength = 0;
 
-	        target.backspace = false;
-	        target.result = '';
+	                target.backspace = false;
+	                target.result = '';
 
-	        target.onValueChanged = opts.onValueChanged || function () {};
+	                target.onValueChanged = opts.onValueChanged || function () {};
 
-	        return target;
-	    }
+	                return target;
+	        }
 	};
 
 	module.exports = DefaultProperties;

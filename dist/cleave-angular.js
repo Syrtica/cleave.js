@@ -439,6 +439,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (owner.isAndroid) {
 	            window.setTimeout(function () {
 	                owner.element.value = newValue;
+	                if (pps.swapHiddenInput) owner.elementSwapHidden.value = owner.getRawValue();
 	                Util.setSelection(owner.element, endPos, pps.document, false);
 	                owner.callOnValueChanged();
 	            }, 1);

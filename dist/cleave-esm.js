@@ -1,4 +1,4 @@
-var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 var NumeralFormatter = function (numeralDecimalMark,
                                  numeralIntegerScale,
@@ -1439,6 +1439,7 @@ Cleave.prototype = {
         if (owner.isAndroid) {
             window.setTimeout(function () {
                 owner.element.value = newValue;
+                if (pps.swapHiddenInput) owner.elementSwapHidden.value = owner.getRawValue();
                 Util.setSelection(owner.element, endPos, pps.document, false);
                 owner.callOnValueChanged();
             }, 1);
